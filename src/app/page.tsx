@@ -12,9 +12,11 @@ import Icon from "./Charts/Icon";
 export default function Home() {
   const [routerState, setRouterState] = useState<string>("User Nodes");
   const [timeframe, setTimeframe] = useState<"Day" | "Week" | "Month">("Day");
+  const [number, setNumber] = useState<string>("403,207");
 
-  const handleChnageRouter = (state: string) => {
+  const handleChnageRouter = (state: string, num: string) => {
     setRouterState(state);
+    setNumber(num)
   };
 
   return (
@@ -28,7 +30,7 @@ export default function Home() {
             <div className="hidden lg:block md:ml-6">
               <div className="flex lg:space-x-14 md:space-x-5 text-white">
                 <a href="#about" className=" font-[400] text-[18px] font-inter">
-                  DEMO
+                  Overview
                 </a>
               </div>
             </div>
@@ -41,13 +43,13 @@ export default function Home() {
       </div>
       <div className=" mx-auto h-full flex flex-col items-center justify-center px-5">
         <div className="flex items-center justify-center space-x-2 md:space-x-20 py-10">
-          <div className="flex flex-col space-y-3">
-            <p className="text-white font-[600] text-[25px] md:text-[40px] font-inter leading-[48.41px]">
-              Check-Ins
-            </p>
-            <p className="text-white font-[400] text-[14px] font-inter leading-[21.78px]">
-              Monitor the check-Ins and user engagement
-            </p>
+          <div className="w-full flex flex-col justify-center ">
+            <div className="text-white font-[700] text-center text-[30px] font-inter ">
+              {routerState}
+            </div>
+            <div className="text-white font-[400] text-center text-[14px] font-inter">
+              Monitor the growth of MEMO {routerState}
+            </div>
           </div>
           <span className="flex border border-white h-[97px]"></span>
           <div className="flex flex-col space-y-3">
@@ -55,16 +57,16 @@ export default function Home() {
               {/* Check-Ins */}
             </p>
             <p className="text-white font-[600] text-[25px] md:text-[40px] font-inter leading-[48.41px]">
-              {/* 106,255,026 */}
+              {number}
             </p>
           </div>
         </div>
         <div className="flex items-center  justify-center space-x-2 ">
-          <div className="grid grid-cols-2 xl:grid-cols-6 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-6 xl:grid-cols-6 md:grid-cols-6 gap-4">
             <button
               className={`flex flex-col items-center justify-center rounded-lg nav-button ${routerState === "User Nodes" ? "active" : ""
                 }`}
-              onClick={() => handleChnageRouter("User Nodes")}
+              onClick={() => handleChnageRouter("User Nodes", "403,207")}
             >
               <p className="font-[700] text-[14px] font-inter">403,207</p>
               <p className="font-[700] text-[14px] font-inter ">User Nodes</p>
@@ -72,7 +74,7 @@ export default function Home() {
             <button
               className={`flex flex-col items-center justify-center rounded-lg nav-button ${routerState === "Provider Nodes" ? "active" : ""
                 }`}
-              onClick={() => handleChnageRouter("Provider Nodes")}
+              onClick={() => handleChnageRouter("Provider Nodes", "47,975")}
             >
               <p className="font-[700] text-[14px] font-inter">47,975</p>
               <p className="font-[700] text-[14px] font-inter">
@@ -82,7 +84,7 @@ export default function Home() {
             <button
               className={`flex flex-col items-center justify-center rounded-lg nav-button ${routerState === "Nodes Growth" ? "active" : ""
                 }`}
-              onClick={() => handleChnageRouter("Nodes Growth")}
+              onClick={() => handleChnageRouter("Nodes Growth", "53,273")}
             >
               <p className="font-[700] text-[14px] font-inter">53,273</p>
               <p className="font-[700] text-[14px] font-inter">Nodes Growth</p>
@@ -90,7 +92,7 @@ export default function Home() {
             <button
               className={`flex flex-col items-center justify-center rounded-lg nav-button ${routerState === "Accounts DID" ? "active" : ""
                 }`}
-              onClick={() => handleChnageRouter("Accounts DID")}
+              onClick={() => handleChnageRouter("Accounts DID", "605,273")}
             >
               <p className="font-[700] text-[14px] font-inter">605,273</p>
               <p className="font-[700] text-[14px] font-inter">Accounts DID</p>
@@ -98,7 +100,7 @@ export default function Home() {
             <button
               className={`flex flex-col items-center justify-center rounded-lg nav-button ${routerState === "Files DID" ? "active" : ""
                 }`}
-              onClick={() => handleChnageRouter("Files DID")}
+              onClick={() => handleChnageRouter("Files DID", "212,4795")}
             >
               <p className="font-[700] text-[14px] font-inter">212,4795</p>
               <p className="font-[700] text-[14px] font-inter">Files DID</p>
@@ -106,7 +108,7 @@ export default function Home() {
             <button
               className={`flex flex-col items-center justify-center rounded-lg nav-button ${routerState === "Active Participants" ? "active" : ""
                 }`}
-              onClick={() => handleChnageRouter("Active Participants")}
+              onClick={() => handleChnageRouter("Active Participants", "12,567,903")}
             >
               <p className="font-[700] text-[14px] font-inter">12,567,903</p>
               <p className="font-[700] text-[14px] font-inter">
@@ -115,16 +117,6 @@ export default function Home() {
             </button>
           </div>
         </div>
-
-        <div className="w-full flex flex-col justify-center  mt-14">
-          <div className="text-white font-[700] text-center text-[24px] font-inter leading-[29.05px]">
-            {routerState}
-          </div>
-          <div className="text-white font-[400] text-center text-[14px] font-inter leading-[16.94px] mt-3">
-            Monitor the growth of MEMO User nodes
-          </div>
-        </div>
-
         <div className="w-full flex flex-row md:flex-row justify-center gap-1">
           {/* graphs left */}
           <div className="flex flex-col w-full max-w-[780px]">
@@ -166,7 +158,7 @@ export default function Home() {
             <button
               className={`flex relative flex-col p-1 md:p-1 w-[220px] lg:w-[220px]  rounded-lg  nav-button1  ${routerState === "User Nodes" ? "active" : ""
                 }`}
-              onClick={() => handleChnageRouter("User Nodes")}
+              onClick={() => handleChnageRouter("User Nodes", "403,207")}
             >
               <p className="font-[700] text-[10px] md:text-[12px] lg:text-[14px] font-inter ">
                 USER NODES
@@ -179,7 +171,7 @@ export default function Home() {
             <button
               className={`flex relative flex-col p-1 md:p-1 w-[150px] lg:w-[220px]  rounded-lg  nav-button1 ${routerState === "Provider Nodes" ? "active" : ""
                 }`}
-              onClick={() => handleChnageRouter("Provider Nodes")}
+              onClick={() => handleChnageRouter("Provider Nodes", "47,975")}
             >
               <p className="font-[700] text-[10px] md:text-[12px] lg:text-[14px] font-inter ">
                 PROVIDER NODES
@@ -192,7 +184,7 @@ export default function Home() {
             <button
               className={`flex relative flex-col p-1 md:p-1 w-[150px] lg:w-[220px]  rounded-lg  nav-button1 ${routerState === "Nodes Growth" ? "active" : ""
                 }`}
-              onClick={() => handleChnageRouter("Nodes Growth")}
+              onClick={() => handleChnageRouter("Nodes Growth", "53,273")}
             >
               <p className="font-[700] text-[10px] md:text-[12px] lg:text-[14px] font-inter ">
                 NODES GROWTH
@@ -205,7 +197,7 @@ export default function Home() {
             <button
               className={`flex relative flex-col p-2 md:p-1 w-[150px] lg:w-[220px]  rounded-lg  nav-button1 ${routerState === "Accounts DID" ? "active" : ""
                 }`}
-              onClick={() => handleChnageRouter("Accounts DID")}
+              onClick={() => handleChnageRouter("Accounts DID", "605,273")}
             >
               <p className="font-[700] text-[10px] md:text-[12px] lg:text-[14px] font-inter ">
                 ACCOUNTS DID
@@ -218,7 +210,7 @@ export default function Home() {
             <button
               className={`flex relative flex-col p-2 md:p-1 w-[150px] lg:w-[220px]  rounded-lg  nav-button1 ${routerState === "Files DID" ? "active" : ""
                 }`}
-              onClick={() => handleChnageRouter("Files DID")}
+              onClick={() => handleChnageRouter("Files DID", "212,4795")}
             >
               <p className="font-[700] text-[10px] md:text-[12px] lg:text-[14px] font-inter ">
                 FILES DID
@@ -231,7 +223,7 @@ export default function Home() {
             <button
               className={`flex relative flex-col p-2 md:p-1 w-[150px] lg:w-[220px]  rounded-lg  nav-button1 ${routerState === "Active Participants" ? "active" : ""
                 }`}
-              onClick={() => handleChnageRouter("Active Participants")}
+              onClick={() => handleChnageRouter("Active Participants", "12,567,903")}
             >
               <p className="font-[700] text-[10px] md:text-[12px] lg:text-[14px] font-inter ">
                 ACTIVE PARTICIPANTS
@@ -249,6 +241,7 @@ export default function Home() {
           <Image
             src="/assets/twiter.png"
             alt="Logo Icon"
+            onClick={() => { window.open("https://x.com/MemoLabsOrg", "_blank") }}
             width={59} // Set the desired width
             height={58} // Set the desired height
             className="text-black" // You can still apply classes
@@ -256,13 +249,7 @@ export default function Home() {
           <Image
             src="/assets/discord.png"
             alt="Logo Icon"
-            width={59} // Set the desired width
-            height={58} // Set the desired height
-            className="text-black" // You can still apply classes
-          />
-          <Image
-            src="/assets/photo.png"
-            alt="Logo Icon"
+            onClick={() => { window.open("https://discord.com/invite/YG4Ydv2E7X", "_blank") }}
             width={59} // Set the desired width
             height={58} // Set the desired height
             className="text-black" // You can still apply classes
@@ -270,6 +257,7 @@ export default function Home() {
           <Image
             src="/assets/telegram.png"
             alt="Logo Icon"
+            onClick={() => { window.open("https://t.me/memolabsio", "_blank") }}
             width={59} // Set the desired width
             height={58} // Set the desired height
             className="text-black" // You can still apply classes
