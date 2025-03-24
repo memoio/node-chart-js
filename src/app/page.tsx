@@ -100,9 +100,9 @@ export default function Home() {
             <button
               className={`flex flex-col items-center justify-center rounded-lg nav-button ${routerState === "Files DID" ? "active" : ""
                 }`}
-              onClick={() => handleChnageRouter("Files DID", "212,4795")}
+              onClick={() => handleChnageRouter("Files DID", "2,124,795")}
             >
-              <p className="font-[700] text-[14px] font-inter">212,4795</p>
+              <p className="font-[700] text-[14px] font-inter">2,124,795</p>
               <p className="font-[700] text-[14px] font-inter">Files DID</p>
             </button>
             <button
@@ -210,13 +210,13 @@ export default function Home() {
             <button
               className={`flex relative flex-col p-2 md:p-1 w-[150px] lg:w-[220px]  rounded-lg  nav-button1 ${routerState === "Files DID" ? "active" : ""
                 }`}
-              onClick={() => handleChnageRouter("Files DID", "212,4795")}
+              onClick={() => handleChnageRouter("Files DID", "2,124,795")}
             >
               <p className="font-[700] text-[10px] md:text-[12px] lg:text-[14px] font-inter ">
                 FILES DID
               </p>
               <p className="font-[700] text-[14px] md:text-[18px] lg:text-[26px]  font-inter">
-                212,4795
+                2,124,795
               </p>
               <Icon></Icon>
             </button>
