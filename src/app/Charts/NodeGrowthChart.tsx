@@ -17,7 +17,7 @@ export default function NodeGrowthChart({ timeframe }: { timeframe: "Day" | "Wee
     useEffect(() => {
         setSeriesData([
             {
-                name: 'User Nodes',
+                name: 'Nodes Growth',
                 data: UserNodeData[timeframe],
             }
         ])

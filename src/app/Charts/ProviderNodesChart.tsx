@@ -17,7 +17,7 @@ export default function ProviderNodesChart({ timeframe }: { timeframe: "Day" | "
     useEffect(() => {
         setSeriesData([
             {
-                name: 'User Nodes',
+                name: 'Provider Nodes',
                 data: ProviderNodeData[timeframe],
             }
         ])

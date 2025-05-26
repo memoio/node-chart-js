@@ -15,7 +15,7 @@ export default function ActiveParticipantsChart({ timeframe }: { timeframe: "Day
     useEffect(() => {
         setSeriesData([
             {
-                name: 'User Nodes',
+                name: 'Active Particopants',
                 data: UserNodeData[timeframe],
             }
         ])

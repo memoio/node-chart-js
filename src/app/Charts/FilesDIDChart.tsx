@@ -15,7 +15,7 @@ export default function FilesDIDChart({ timeframe }: { timeframe: "Day" | "Week"
     useEffect(() => {
         setSeriesData([
             {
-                name: 'User Nodes',
+                name: 'Files DID',
                 data: UserNodeData[timeframe],
             }
         ])
