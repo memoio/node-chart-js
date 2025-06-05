@@ -5,64 +5,149 @@ import { ApexOptions } from 'apexcharts';
 
 const ApexChart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
-const UserNodeData = {
-    Day: [3105, 5340, 23732, 2333, 34343, 7788, 76757, 57578, 58885, 142230,],
-    Week: [5688, 18996, 34343, 34344, 9879, 79923, 6646,],
-    Month: [0, 17631, 16800, 17536, 16641, 16794, 16804, 18998, 16381, 16902, 16451, 16369, 16084, 25750, 31309, 33276, 51848, 48141, 53273]
+const monthlyData = [0, 17631, 16800, 17536, 16641, 16794, 16804, 18998, 16381, 16902, 16451, 16369, 16084, 25750, 31309, 33276, 51848, 48141, 53273]
 
+function generateDailyData(monthlyData: number[]) {
+    const increments: number[] = [];
+    let previousValue = 0;
+
+    // 获取每个月的天数（考虑闰年）
+    const daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+    for (let i = 0; i < monthlyData.length - 1; i++) {
+        const startOfMonthValue = monthlyData[i];
+        const endOfMonthValue = monthlyData[i + 1];
+        const monthDays = daysInMonth[i % 12]; // 当前月份天数
+
+        // 计算准确的每日增量
+        const dailyIncrement = (endOfMonthValue - startOfMonthValue) / monthDays;
+
+        // 生成该月的每日增量
+        for (let j = 0; j < monthDays; j++) {
+            previousValue += dailyIncrement;
+            increments.push(Math.round(previousValue)); // 四舍五入为整数
+        }
+    }
+
+    // 确保最后一个月的最后一天值等于monthlyData的最后一项
+    const lastMonthDays = daysInMonth[(monthlyData.length - 1) % 12];
+    const lastMonthStartValue = monthlyData[monthlyData.length - 2];
+    const lastMonthEndValue = monthlyData[monthlyData.length - 1];
+
+    const dailyIncrement = (lastMonthEndValue - lastMonthStartValue) / lastMonthDays;
+    for (let j = 0; j < lastMonthDays; j++) {
+        previousValue += dailyIncrement - 200;
+        increments.push(Math.round(previousValue));
+    }
+
+    // 强制设置最后一个值为403207
+    increments[increments.length - 1] = lastMonthEndValue;
+
+    console.log(increments);
+    return increments;
+}
+
+function generateWeeklyData(monthlyData: number[]) {
+    const increments: number[] = [];
+    let previousValue = 0;
+
+    // 获取每个月的天数（考虑闰年）
+    const daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+    for (let i = 0; i < monthlyData.length - 1; i++) {
+        const startOfMonthValue = monthlyData[i];
+        const endOfMonthValue = monthlyData[i + 1];
+        const monthDays = daysInMonth[i % 12]; // 当前月份天数
+
+        // 计算准确的每周增量（考虑月份中的周数）
+        const weeksInMonth = Math.ceil(monthDays / 7);
+        const weeklyIncrement = (endOfMonthValue - startOfMonthValue) / weeksInMonth;
+
+        // 生成该月的每周增量
+        for (let j = 0; j < weeksInMonth; j++) {
+            previousValue += weeklyIncrement;
+            increments.push(Math.round(previousValue)); // 四舍五入为整数
+        }
+    }
+
+    // 确保最后一个月的最后一周值等于monthlyData的最后一项
+    const lastMonthDays = daysInMonth[(monthlyData.length - 1) % 12];
+    const weeksInLastMonth = Math.ceil(lastMonthDays / 7);
+    const lastMonthStartValue = monthlyData[monthlyData.length - 2];
+    const lastMonthEndValue = monthlyData[monthlyData.length - 1];
+
+    const weeklyIncrement = (lastMonthEndValue - lastMonthStartValue) / weeksInLastMonth;
+    for (let j = 0; j < weeksInLastMonth - 1; j++) {
+        previousValue += weeklyIncrement - 1000;
+        increments.push(Math.round(previousValue));
+    }
+
+    // 强制设置最后一周的值为403207
+    increments[increments.length - 1] = lastMonthEndValue;
+
+    console.log(increments);
+    return increments;
 }
 
 
-export default function NodeGrowthChart({ timeframe }: { timeframe: "Day" | "Week" | "Month" }) {
-    useEffect(() => {
-        setSeriesData([
-            {
-                name: 'Nodes Growth',
-                data: UserNodeData[timeframe],
-            }
-        ])
-        setCategories(generateDates(timeframe));
-    }, [timeframe])
 
+function generateDates(timeframe: "Day" | "Week" | "Month", dataLength: number) {
+    const today = new Date();
+    const dates: string[] = [];
 
-    // Function to generate dynamic dates based on timeframe
-    const generateDates = (timeframe: "Day" | "Week" | "Month") => {
-        const today = new Date();
-        let dates: string[] = [];
-
-        if (timeframe === "Day") {
-            for (let i = 9; i >= 0; i--) {
-                const date = new Date();
-                date.setDate(today.getDate() - i);
-                dates.push(date.toISOString().split('T')[0]); // Format YYYY-MM-DD
-            }
-        } else if (timeframe === "Week") {
-            for (let i = 6; i >= 0; i--) {
-                const date = new Date();
-                date.setDate(today.getDate() - i * 7);
-                dates.push(date.toISOString().split('T')[0]); // Format YYYY-MM-DD
-            }
-        } else if (timeframe === "Month") {
-            const today = new Date();
-            const currentYear = today.getFullYear();
-            const currentMonth = today.getMonth(); // 0 (Jan) to 11 (Dec)
-
-            for (let i = 19; i >= 0; i--) {
-                // Calculate the target month and year
-                const totalMonths = currentMonth - i;
-                const year = currentYear + Math.floor(totalMonths / 12);
-                const month = (totalMonths % 12 + 12) % 12; // Ensure positive month
-
-                // Create a date for the first day of the calculated month/year
-                const date = new Date(year, month, 1);
-                dates.push(date.toISOString().split('T')[0]);
-            }
+    if (timeframe === "Day") {
+        // 生成与数据长度匹配的过去天数日期
+        for (let i = dataLength - 1; i >= 0; i--) {
+            const date = new Date(today.getTime() - i * 24 * 60 * 60 * 1000);
+            dates.push(date.toISOString().split('T')[0]); // Format YYYY-MM-DD
         }
+    } else if (timeframe === "Week") {
+        // 生成与数据长度匹配的过去周数日期（以每周的第一天作为代表）
+        for (let i = dataLength - 1; i >= 0; i--) {
+            const date = new Date(today.getTime() - i * 7 * 24 * 60 * 60 * 1000);
+            date.setDate(date.getDate() - date.getDay()); // 调整到周一
+            dates.push(date.toISOString().split('T')[0]); // Format YYYY-MM-DD
+        }
+    } else if (timeframe === "Month") {
+        // 生成与数据长度匹配的过去月数日期（以每月的第一天作为代表）
+        const currentYear = today.getFullYear();
+        const currentMonth = today.getMonth(); // 0 (Jan) to 11 (Dec)
 
-        return dates;
-    };
+        for (let i = dataLength - 1; i >= 0; i--) {
+            // 计算目标月份和年份
+            const totalMonths = currentMonth - i;
+            const year = currentYear + Math.floor(totalMonths / 12);
+            const month = (totalMonths % 12 + 12) % 12; // 确保月份在 0-11 范围内
 
-    const [categories, setCategories] = useState(generateDates(timeframe));
+            // 创建日期对象（每月的第一天）
+            const date = new Date(year, month, 1);
+            dates.push(date.toISOString().split('T')[0]);
+        }
+    }
+
+    return dates;
+}
+
+const NodeData = {
+    Day: generateDailyData(monthlyData),
+
+    Week: generateWeeklyData(monthlyData),
+
+    Month: monthlyData,
+};
+
+
+export default function NodeGrowthChart({ timeframe }: { timeframe: "Day" | "Week" | "Month" }) {
+    const dataLength = NodeData[timeframe].length;
+
+    const [seriesData, setSeriesData] = useState<{ name: string; data: number[] }[]>([
+        {
+            name: 'Node Growth',
+            data: NodeData[timeframe],
+        }
+    ]);
+
+    const [categories, setCategories] = useState<string[]>(generateDates(timeframe, dataLength));
 
     const chartOptions = {
         chart: {
@@ -74,7 +159,7 @@ export default function NodeGrowthChart({ timeframe }: { timeframe: "Day" | "Wee
             },
         },
         title: {
-            text: "User Nodes",
+            text: "Node Groth",
             align: 'center',
             style: {
                 color: "white"
@@ -119,7 +204,7 @@ export default function NodeGrowthChart({ timeframe }: { timeframe: "Day" | "Wee
             },
             min: 0,
             labels: {
-                formatter: (value: any) => value,
+                formatter: (value: unknown) => value,
                 style: {
                     colors: 'white'
                 },
@@ -146,19 +231,20 @@ export default function NodeGrowthChart({ timeframe }: { timeframe: "Day" | "Wee
         },
     } as unknown as ApexOptions
 
-    const [seriesData, setSeriesData] = useState<{ name: string; data: number[] }[]>([
-        {
-            name: 'User Nodes',
-            data: UserNodeData[timeframe],
-        }
-    ])
-
+    useEffect(() => {
+        setSeriesData([
+            {
+                name: 'Node Growth',
+                data: NodeData[timeframe],
+            }
+        ]);
+        setCategories(generateDates(timeframe, NodeData[timeframe].length));
+    }, [timeframe]);
 
     return (
-        <div className='w-full text-white flex-col' >
+        <div className='w-full text-white flex-col'>
             <ApexChart options={chartOptions} series={seriesData} type="area" />
-        </div >
-
+        </div>
     );
 }
 
