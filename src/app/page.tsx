@@ -1,6 +1,6 @@
 "use client"; // Add this line
 import React, { useState } from "react";
-import Image from "next/image";
+// import Image from "next/image";
 import UserNodesChart from "./Charts/UserNodesChart";
 import ProviderNodesChart from "./Charts/ProviderNodesChart";
 import NodeGrowthChart from "./Charts/NodeGrowthChart";
@@ -23,7 +23,7 @@ export default function Home() {
     <div className="m-full h-full">
       <div className=" w-full flex justify-between items-center h-[104px] bg-[#051610] px-5 md:px-[100px]">
         <p className="font-normal text-[36px] leading-[43.57px] font-inter text-white">
-          <a href="https://memolabs.org">MEMO</a>
+          <a href="https://memolabs.org">memo-data info</a>
         </p>
         <div className="flex justify-between space-x-10 items-center">
           <div className="flex items-center justify-between">
@@ -231,13 +231,13 @@ export default function Home() {
               <p className="font-[700] text-[14px] md:text-[18px] lg:text-[26px]  font-inter">
                 12,567,903
               </p>
-              <Icon></Icon>
+              {/* <Icon></Icon> */}
             </button>
           </div>
         </div>
       </div>
-      <div className="flex flex-col justify-center w-full md:h-[183px] bg-[#051610] items-center mt-5 space-y-0 py-10">
-        <div className="flex justify-center items-center space-x-0">
+      {/* <div className="flex flex-col justify-center w-full md:h-[183px] bg-[#051610] items-center mt-5 space-y-0 py-10"> */}
+      {/* <div className="flex justify-center items-center space-x-0">
           <Image
             src="/assets/twiter.png"
             alt="Logo Icon"
@@ -262,28 +262,28 @@ export default function Home() {
             height={58} // Set the desired height
             className="text-black" // You can still apply classes
           />
-        </div>
-        <div className="flex justify-center items-center p-2 space-x-1 md:space-x-7 pb-[70px] md:pb-[10px]">
+        </div> */}
+      {/* <div className="flex  justify-center items-center p-2 space-x-1 md:space-x-7 pb-[70px] md:pb-[10px]">
           <a
             href="#home"
-            className=" font-[400] text-[18px] font-inter text-center"
+            className=" font-[400] text-white text-[18px] font-inter text-center"
           >
             Privacy Policy
           </a>
           <a
             href="#home"
-            className=" font-[400] text-[18px] font-inter text-center "
+            className=" font-[400] text-white text-[18px] font-inter text-center "
           >
             Terms & Conditions
           </a>
           <a
             href="#home"
-            className=" font-[400] text-[18px] font-inter text-center "
+            className=" font-[400] text-white text-[18px] font-inter text-center "
           >
             Return & Rrfund
           </a>
-        </div>
-      </div>
+        </div> */}
+      {/* </div> */}
     </div>
   );
 }
